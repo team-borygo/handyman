@@ -1,3 +1,5 @@
-mod linux;
+pub mod linux;
 
-pub trait OperatingSystem {}
+pub trait OperatingSystem {
+  fn get_clipboard(&self) -> Option<String>;
+}
