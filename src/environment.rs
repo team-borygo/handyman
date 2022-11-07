@@ -1,5 +1,5 @@
 use crate::{
-  interpreter::{get_interpreters, Interpreter},
+  interpreter::{text::TextInterpreter, Interpreter},
   os::{linux::Linux, OperatingSystem},
 };
 
@@ -11,7 +11,7 @@ pub struct Environment {
 impl Environment {
   pub fn new() -> Environment {
     Environment {
-      interpreters: get_interpreters(),
+      interpreters: vec![Box::new(TextInterpreter {})],
       operating_system: Box::new(Linux {}),
     }
   }
