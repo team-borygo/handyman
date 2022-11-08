@@ -1,4 +1,4 @@
-use crate::bookmark::Bookmark;
+use crate::{bookmark::Bookmark, environment::Environment};
 
 use super::Interpreter;
 
@@ -15,8 +15,12 @@ impl Interpreter for TextInterpreter {
     true
   }
 
-  fn interpet(&self, input: &str) -> crate::bookmark::Bookmark {
-    Bookmark::new(input.to_string(), input.to_string(), self.get_name())
+  fn interpet(&self, environment: &Environment, input: &str) -> crate::bookmark::Bookmark {
+    Bookmark::new(
+      environment.api.prompt_text("Bookmark title"),
+      input.to_string(),
+      self.get_name(),
+    )
   }
 
   fn belongs(&self, interpreted_by: &str) -> bool {

@@ -2,8 +2,8 @@ use environment::Environment;
 
 use crate::bookmark::Bookmark;
 
+mod api;
 mod bookmark;
-mod cli;
 mod environment;
 mod interpreter;
 mod os;
@@ -24,7 +24,7 @@ fn main() {
         .map(|interpreter| (clipboard, interpreter))
     })
     .and_then(|(clipboard, interpreter)| {
-      let bookmark = interpreter.interpet(&clipboard);
+      let bookmark = interpreter.interpet(&environment, &clipboard);
 
       environment.storage.store_bookmark(&environment, &bookmark);
 
