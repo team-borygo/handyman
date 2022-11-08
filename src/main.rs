@@ -1,5 +1,7 @@
 use environment::Environment;
 
+use crate::bookmark::Bookmark;
+
 mod bookmark;
 mod cli;
 mod environment;
@@ -25,6 +27,14 @@ fn main() {
       let bookmark = interpreter.interpet(&clipboard);
 
       environment.storage.store_bookmark(&environment, &bookmark);
+
+      println!(
+        "{:?}",
+        environment
+          .storage
+          .get_bookmarks(&environment)
+          .collect::<Vec<Bookmark>>()
+      );
 
       Some(())
     });

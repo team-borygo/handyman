@@ -1,5 +1,7 @@
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Bookmark {
   pub uuid: String,
   pub title: String,
