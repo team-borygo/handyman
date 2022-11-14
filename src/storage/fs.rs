@@ -24,11 +24,20 @@ impl Storage for FileStorage {
     let path = environment.operating_system.ensure_storage_path();
     let file = File::open(path).unwrap();
 
-    let iter = BufReader::new(file).lines().map(|line| {
-      let bookmark: Bookmark = from_str(&line.unwrap()).unwrap();
-      bookmark
-    });
+    let iter = BufReader::new(file)
+      .lines()
+      .map(|line| line.unwrap())
+      .filter(|line| !line.trim().is_empty())
+      .map(|line| {
+        let bookmark: Bookmark = from_str(&line).unwrap();
+        bookmark
+      });
 
     Box::new(iter)
+  }
+
+  fn clear(&self, environment: &Environment) -> () {
+    let path = environment.operating_system.ensure_storage_path();
+    File::create(&path).unwrap();
   }
 }
