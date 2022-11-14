@@ -1,4 +1,4 @@
-- [ ] Add README docs
+- [x] Add README docs
 - [ ] Add help for commands
 - [ ] Add remove command
 - [ ] Add integration with context menu like dmenu/rofi
