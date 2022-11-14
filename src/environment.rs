@@ -1,6 +1,6 @@
 use crate::{
   api::{cli::Cli, Api},
-  interpreter::{text::TextInterpreter, Interpreter},
+  interpreter::{text::TextInterpreter, url::UrlInterpreter, Interpreter},
   os::{linux::Linux, OperatingSystem},
   storage::{fs::FileStorage, Storage},
 };
@@ -15,7 +15,7 @@ pub struct Environment {
 impl Environment {
   pub fn new() -> Environment {
     Environment {
-      interpreters: vec![Box::new(TextInterpreter {})],
+      interpreters: vec![Box::new(UrlInterpreter {}), Box::new(TextInterpreter {})],
       operating_system: Box::new(Linux {}),
       storage: Box::new(FileStorage {}),
       api: Box::new(Cli {}),

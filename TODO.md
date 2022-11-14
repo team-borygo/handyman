@@ -2,6 +2,6 @@
 - [ ] Add help for commands
 - [ ] Add remove command
 - [ ] Add integration with context menu like dmenu/rofi
-- [ ] Add URL interpreter
+- [x] Add URL interpreter
 - [ ] Add FS interpreter
 - [ ] Add interpreter action (open in browser for URL, in terminal/file manager for FS)
