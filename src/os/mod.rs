@@ -4,5 +4,6 @@ pub mod linux;
 
 pub trait OperatingSystem {
   fn get_clipboard(&self) -> Option<String>;
+  fn write_clipboard(&self, input: &str) -> ();
   fn ensure_storage_path(&self) -> PathBuf;
 }

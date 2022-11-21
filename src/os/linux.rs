@@ -1,7 +1,8 @@
 use std::env;
 use std::fs::{create_dir_all, File};
+use std::io::Write;
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::str;
 
 use super::OperatingSystem;
@@ -25,6 +26,20 @@ impl OperatingSystem for Linux {
           .to_string(),
       )
     }
+  }
+
+  fn write_clipboard(&self, input: &str) -> () {
+    let mut input_command = Command::new("xsel")
+      .arg("-b")
+      .stdin(Stdio::piped())
+      .spawn()
+      .expect("failed to execute /xsel/");
+
+    let stdin = input_command.stdin.as_mut().unwrap();
+
+    stdin
+      .write_all(input.as_bytes())
+      .expect("failed to write to /xsel/ stdin");
   }
 
   fn ensure_storage_path(&self) -> std::path::PathBuf {

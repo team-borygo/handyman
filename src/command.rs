@@ -7,4 +7,5 @@ pub enum Command {
   AddClipboard {},
   AddInput { input: String },
   Clear { yes: bool },
+  Select { id: u32 },
 }

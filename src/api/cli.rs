@@ -24,6 +24,7 @@ impl Api for Cli {
         },
         CliCommand::List {} => Command::List {},
         CliCommand::Clear { yes } => Command::Clear { yes },
+        CliCommand::Select { id } => Command::Select { id },
       },
     }
   }
@@ -44,17 +45,25 @@ impl Api for Cli {
   }
 
   fn list_bookmarks(&self, iter: Box<dyn Iterator<Item = Bookmark>>) -> () {
+    let mut i = 0;
     for bookmark in iter {
       println!(
-        "{} ({}...)",
+        "{}. {} ({}...)",
+        i,
         bookmark.title.green(),
         bookmark.content.short().dimmed()
       );
+
+      i += 1;
     }
   }
 
   fn confirm(&self, title: &str) -> bool {
     Confirm::new().with_prompt(title).interact().unwrap()
+  }
+
+  fn print_error(&self, error: &str) -> () {
+    eprintln!("{}", error.red());
   }
 }
 
@@ -82,5 +91,8 @@ enum CliCommand {
   Clear {
     #[arg(short)]
     yes: bool,
+  },
+  Select {
+    id: u32,
   },
 }

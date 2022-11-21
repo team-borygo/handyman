@@ -1,3 +1,4 @@
+use std::fmt::format;
 use std::process;
 
 use command::Command;
@@ -22,6 +23,7 @@ fn main() {
     Command::AddInput { input } => command_add_input(&environment, input),
     Command::List {} => command_list(&environment),
     Command::Clear { yes } => command_clear(&environment, yes),
+    Command::Select { id } => command_select(&environment, id),
   };
 
   process::exit(return_code)
@@ -96,5 +98,28 @@ fn command_clear(environment: &Environment, mut yes: bool) -> i32 {
     0
   } else {
     1
+  }
+}
+
+fn command_select(environment: &Environment, id: u32) -> i32 {
+  let mut bookmarks = environment.storage.get_bookmarks(environment);
+
+  let selected_bookmark = bookmarks.nth(id as usize);
+
+  match selected_bookmark {
+    None => {
+      environment
+        .api
+        .print_error(&format!("Cannot find bookmark: {}", id));
+
+      1
+    }
+    Some(selected_bookmark) => {
+      environment
+        .operating_system
+        .write_clipboard(selected_bookmark.content.long());
+
+      0
+    }
   }
 }
