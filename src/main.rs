@@ -1,4 +1,3 @@
-use std::fmt::format;
 use std::process;
 
 use command::Command;
@@ -20,6 +19,7 @@ fn main() {
 
   let return_code = match program.command {
     Command::AddClipboard {} => command_add_clipboard(&environment),
+    Command::AddSelection {} => command_add_selection(&environment),
     Command::AddInput { input } => command_add_input(&environment, input),
     Command::List {} => command_list(&environment),
     Command::Clear { yes } => command_clear(&environment, yes),
@@ -48,6 +48,24 @@ fn main() {
 
 fn command_add_clipboard(environment: &Environment) -> i32 {
   let clipboard = environment.operating_system.get_clipboard();
+
+  clipboard
+    .and_then(|clipboard| {
+      match_interpreter(environment, &clipboard).map(|interpreter| (clipboard, interpreter))
+    })
+    .and_then(|(clipboard, interpreter)| {
+      let bookmark = interpreter.interpet(&environment, &clipboard);
+
+      environment.storage.store_bookmark(&environment, &bookmark);
+
+      Some(0)
+    })
+    // FIXME: add error reporting
+    .unwrap_or(1)
+}
+
+fn command_add_selection(environment: &Environment) -> i32 {
+  let clipboard = environment.operating_system.get_selection();
 
   clipboard
     .and_then(|clipboard| {

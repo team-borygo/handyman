@@ -17,7 +17,10 @@ impl Interpreter for TextInterpreter {
   }
 
   fn interpet(&self, environment: &Environment, input: &str) -> crate::bookmark::Bookmark {
-    let prompt_title = format!("Bookmark title for ({}...)", &input.unicode_truncate(30).0);
+    let prompt_title = format!(
+      "Bookmark title for ({}...)",
+      &input.unicode_truncate(30).0.replace('\n', "")
+    );
 
     Bookmark::new(
       environment.api.prompt_text(&prompt_title),

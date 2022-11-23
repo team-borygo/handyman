@@ -16,12 +16,21 @@ impl Api for Cli {
 
     Program {
       command: match cli.command {
-        CliCommand::Add { clipboard, input } => match clipboard {
-          true => Command::AddClipboard {},
-          false => Command::AddInput {
-            input: input.join(" "),
-          },
-        },
+        CliCommand::Add {
+          clipboard,
+          input,
+          selection,
+        } => {
+          if (clipboard) {
+            Command::AddClipboard {}
+          } else if (selection) {
+            Command::AddSelection {}
+          } else {
+            Command::AddInput {
+              input: input.join(" "),
+            }
+          }
+        }
         CliCommand::List {} => Command::List {},
         CliCommand::Clear { yes } => Command::Clear { yes },
         CliCommand::Select { id } => Command::Select { id },
@@ -79,11 +88,14 @@ enum CliCommand {
   #[command(group(
     ArgGroup::new("target")
       .required(true)
-      .args(["clipboard", "input"])
+      .args(["clipboard", "selection", "input"])
   ))]
   Add {
     #[arg(short, long)]
     clipboard: bool,
+
+    #[arg(short, long)]
+    selection: bool,
 
     input: Vec<String>,
   },

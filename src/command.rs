@@ -5,6 +5,7 @@ pub struct Program {
 pub enum Command {
   List {},
   AddClipboard {},
+  AddSelection {},
   AddInput { input: String },
   Clear { yes: bool },
   Select { id: u32 },
