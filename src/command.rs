@@ -9,4 +9,5 @@ pub enum Command {
   AddInput { input: String },
   Clear { yes: bool },
   Select { id: u32 },
+  SelectInteractive {},
 }

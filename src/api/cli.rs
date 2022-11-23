@@ -33,7 +33,13 @@ impl Api for Cli {
         }
         CliCommand::List {} => Command::List {},
         CliCommand::Clear { yes } => Command::Clear { yes },
-        CliCommand::Select { id } => Command::Select { id },
+        CliCommand::Select { id, interactive } => {
+          if (interactive) {
+            Command::SelectInteractive {}
+          } else {
+            Command::Select { id: id.unwrap() }
+          }
+        }
       },
     }
   }
@@ -104,7 +110,15 @@ enum CliCommand {
     #[arg(short)]
     yes: bool,
   },
+  #[command(group(
+    ArgGroup::new("target")
+      .required(true)
+      .args(["interactive", "id"])
+  ))]
   Select {
-    id: u32,
+    #[arg(short, long)]
+    interactive: bool,
+
+    id: Option<u32>,
   },
 }

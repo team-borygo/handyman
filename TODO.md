@@ -7,3 +7,4 @@
 - [ ] Add interpreter action (open in browser for URL, in terminal/file manager for FS)
 - [x] Copy bookmark to clipboard
 - [x] Create bookmark from selection
+- [x] Add select interactive method

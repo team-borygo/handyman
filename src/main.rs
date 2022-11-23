@@ -1,5 +1,6 @@
 use std::process;
 
+use bookmark::Bookmark;
 use command::Command;
 use environment::Environment;
 use interpreter::match_interpreter;
@@ -24,6 +25,7 @@ fn main() {
     Command::List {} => command_list(&environment),
     Command::Clear { yes } => command_clear(&environment, yes),
     Command::Select { id } => command_select(&environment, id),
+    Command::SelectInteractive {} => command_select_interactive(&environment),
   };
 
   process::exit(return_code)
@@ -140,4 +142,16 @@ fn command_select(environment: &Environment, id: u32) -> i32 {
       0
     }
   }
+}
+
+fn command_select_interactive(environment: &Environment) -> i32 {
+  let bookmarks: Vec<Bookmark> = environment.storage.get_bookmarks(environment).collect();
+
+  let selected_bookmark = environment.api.select_bookmark(&bookmarks);
+
+  environment
+    .operating_system
+    .write_clipboard(selected_bookmark.content.long());
+
+  0
 }
