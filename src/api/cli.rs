@@ -21,9 +21,9 @@ impl Api for Cli {
           input,
           selection,
         } => {
-          if (clipboard) {
+          if clipboard {
             Command::AddClipboard {}
-          } else if (selection) {
+          } else if selection {
             Command::AddSelection {}
           } else {
             Command::AddInput {
@@ -34,7 +34,7 @@ impl Api for Cli {
         CliCommand::List {} => Command::List {},
         CliCommand::Clear { yes } => Command::Clear { yes },
         CliCommand::Select { id, interactive } => {
-          if (interactive) {
+          if interactive {
             Command::SelectInteractive {}
           } else {
             Command::Select { id: id.unwrap() }

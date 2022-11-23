@@ -79,4 +79,52 @@ impl OperatingSystem for Linux {
 
     path
   }
+
+  fn prompt_text(&self, title: &str) -> String {
+    let mut command = Command::new("dmenu")
+      .arg("-p")
+      .arg(title)
+      .stdin(Stdio::piped())
+      .stdout(Stdio::piped())
+      .spawn()
+      .expect("failed to execute /dmenu/");
+
+    let stdin = command.stdin.as_mut().unwrap();
+    stdin
+      .write_all(b"")
+      .expect("failed to write to /dmenu/ stdin");
+    drop(stdin);
+
+    let output = command.wait_with_output().unwrap();
+
+    str::from_utf8(&output.stdout)
+      .expect("failed to parse input data into UTF-8")
+      .trim()
+      .to_string()
+  }
+
+  fn interactive_select(&self, title: &str, options: &Vec<String>) -> String {
+    let mut command = Command::new("dmenu")
+      .arg("-l")
+      .arg("10")
+      .arg("-p")
+      .arg(title)
+      .stdin(Stdio::piped())
+      .stdout(Stdio::piped())
+      .spawn()
+      .expect("failed to execute /dmenu/");
+
+    let stdin = command.stdin.as_mut().unwrap();
+    stdin
+      .write_all(options.join("\n").as_bytes())
+      .expect("failed to write to /dmenu/ stdin");
+    drop(stdin);
+
+    let output = command.wait_with_output().unwrap();
+
+    str::from_utf8(&output.stdout)
+      .expect("failed to parse input data into UTF-8")
+      .trim()
+      .to_string()
+  }
 }

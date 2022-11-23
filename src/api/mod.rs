@@ -1,6 +1,7 @@
 use crate::{bookmark::Bookmark, command::Program};
 
 pub mod cli;
+pub mod gui;
 
 pub trait Api {
   fn start(&self) -> Program;

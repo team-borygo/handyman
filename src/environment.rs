@@ -1,5 +1,5 @@
 use crate::{
-  api::{cli::Cli, Api},
+  api::{gui::Gui, Api},
   interpreter::{text::TextInterpreter, url::UrlInterpreter, Interpreter},
   os::{linux::Linux, OperatingSystem},
   storage::{fs::FileStorage, Storage},
@@ -18,7 +18,7 @@ impl Environment {
       interpreters: vec![Box::new(UrlInterpreter {}), Box::new(TextInterpreter {})],
       operating_system: Box::new(Linux {}),
       storage: Box::new(FileStorage {}),
-      api: Box::new(Cli {}),
+      api: Box::new(Gui::new(Box::new(Linux {}))),
     }
   }
 }

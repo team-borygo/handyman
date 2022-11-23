@@ -23,6 +23,7 @@ impl Interpreter for TextInterpreter {
     );
 
     Bookmark::new(
+      // FIXME: what if text is empty?
       environment.api.prompt_text(&prompt_title),
       input.to_string(),
       self.get_name(),
